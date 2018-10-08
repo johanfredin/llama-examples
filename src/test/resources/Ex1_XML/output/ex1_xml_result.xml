@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<users>
+    <user>
+        <first-name>Laila</first-name>
+        <last-name>Bagge</last-name>
+        <age>35</age>
+        <gender>FEMALE</gender>
+        <country>Denmark</country>
+    </user>
+    <user>
+        <first-name>Anders</first-name>
+        <last-name>Svensson</last-name>
+        <age>25</age>
+        <gender>MALE</gender>
+        <country>Sweden</country>
+    </user>
+</users>

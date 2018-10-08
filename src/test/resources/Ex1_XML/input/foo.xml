@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+    <user>
+        <first-name>Anders</first-name>
+        <last-name>Svensson</last-name>
+        <age>25</age>
+        <gender>Male</gender>
+        <country>Sweden</country>
+    </user>
+    <user>
+        <first-name>Laila</first-name>
+        <last-name>Bagge</last-name>
+        <age>35</age>
+        <gender>Female</gender>
+        <country>Denmark</country>
+    </user>
+    <user>
+        <first-name>Klas</first-name>
+        <last-name>Axelsson</last-name>
+        <age>0</age>
+        <gender>Male</gender>
+        <country>NO</country>
+    </user>
+</users>
