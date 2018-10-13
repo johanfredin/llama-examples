@@ -2,6 +2,7 @@ package se.fredin.llama.examples;
 
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
+import se.fredin.llama.LlamaRoute;
 import se.fredin.llama.examples.bean.Pet;
 import se.fredin.llama.examples.bean.User;
 import se.fredin.llama.utils.Endpoint;

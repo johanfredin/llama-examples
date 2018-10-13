@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
+import se.fredin.llama.LlamaRoute;
 import se.fredin.llama.examples.bean.CsvUser;
 import se.fredin.llama.utils.Endpoint;
 import se.fredin.llama.utils.LlamaUtils;

@@ -1,8 +1,5 @@
 package se.fredin.llama.examples;
 
-import se.fredin.llama.processor.ResultType;
-import se.fredin.llama.utils.Endpoint;
-
 public interface LlamaExamples {
 
     String exInputDir();

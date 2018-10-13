@@ -2,6 +2,7 @@ package se.fredin.llama.examples;
 
 import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
+import se.fredin.llama.LlamaRoute;
 import se.fredin.llama.examples.jaxb.Users;
 import se.fredin.llama.utils.Endpoint;
 

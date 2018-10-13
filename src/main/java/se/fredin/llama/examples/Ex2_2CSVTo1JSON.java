@@ -4,6 +4,7 @@ import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
+import se.fredin.llama.LlamaRoute;
 import se.fredin.llama.examples.bean.Pet;
 import se.fredin.llama.examples.bean.User;
 import se.fredin.llama.utils.Endpoint;

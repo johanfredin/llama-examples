@@ -16,7 +16,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>RELEASE</version>
+        <version>2.0.5.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -59,15 +59,16 @@
 
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-test</artifactId>
-            <version>RELEASE</version>
+            <artifactId>camel-spring-boot</artifactId>
+            <version>2.22.1</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.camel</groupId>
-            <artifactId>camel-spring-boot</artifactId>
-            <version>RELEASE</version>
+            <artifactId>camel-test</artifactId>
+            <version>2.22.1</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -77,7 +78,7 @@
         <dependency>
             <groupId>com.github.johanfredin</groupId>
             <artifactId>llama</artifactId>
-            <version>b5a6544273</version>
+            <version>6348af5d62</version>
         </dependency>
 
     </dependencies>
