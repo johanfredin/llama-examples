@@ -26,7 +26,7 @@ public class Ex1_CSVList extends LlamaRoute implements LlamaExamples {
         format.setUseMaps(true);
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId(routeId())
+                .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(format)
                 .process(this::transformData)

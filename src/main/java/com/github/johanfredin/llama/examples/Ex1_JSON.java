@@ -22,7 +22,7 @@ public class Ex1_JSON extends LlamaRoute implements LlamaExamples {
     @Override
     public void configure() {
         from(Endpoint.file(exInputDir(), "person.json"))
-                .routeId(routeId())
+                .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new ListJacksonDataFormat(CsvUser.class))
                 .process(this::processUsers)

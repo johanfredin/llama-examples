@@ -19,7 +19,7 @@ public class Ex1_XML extends LlamaRoute implements LlamaExamples {
     @Override
     public void configure() {
         from(Endpoint.file(exInputDir(), "person.xml"))
-                .routeId(routeId())
+                .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .convertBodyTo(Users.class)
                 .process(this::processUsers)

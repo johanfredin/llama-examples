@@ -25,7 +25,7 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
 
         from(Endpoint.file(exInputDir(), "person.csv"))                                    // Fetch input file
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
-                .routeId("read-person-csv")
+                .routeId(exampleRouteId())
                 .unmarshal(bindyCsvDataFormat)                                                   // Unmarshal CSV to POJO
                 .process(this::processUsers)                                                     // Do transformation
                 .marshal(bindyCsvDataFormat)                                                     // Marshal POJO back to CSV

@@ -22,14 +22,14 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
     public void configure() {
 
         from(Endpoint.file(exInputDir(), "pet.csv"))
-                .routeId(routeId() + "_read-pets")
+                .routeId(exampleRouteId("read-pets"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(Pet.class))
                 .to("direct:ex2-2-csv-to1-pet")
                 .startupOrder(nextAvailableStartup());
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId(routeId() + "_read-persons")
+                .routeId(exampleRouteId("read-persons"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(User.class))
                 .pollEnrich("direct:ex2-2-csv-to1-pet", (oldExchange, newExchange) -> {

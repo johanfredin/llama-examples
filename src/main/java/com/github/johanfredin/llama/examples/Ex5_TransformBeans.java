@@ -16,10 +16,10 @@ public class Ex5_TransformBeans extends LlamaRoute implements LlamaExamples {
         var bindyCsvDataFormat = new BindyCsvDataFormat(CsvUser.class);
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId(routeId())
+                .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(bindyCsvDataFormat)
-                .process(exchange -> Processors.<CsvUser>transform(exchange, user -> {
+                .process(exchange -> Processors.<CsvUser>transformBeans(exchange, user -> {
                     user.setAge(100);
                     user.setFirstName("Transformed-" + user.getFirstName());
                 }))

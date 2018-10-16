@@ -18,11 +18,11 @@ public class Ex4_JoinCollections extends LlamaRoute implements LlamaExamples {
     public void configure() {
         var csvToMapsFormat = csvToCollectionOfMaps();
 
-        var petRoute = getRoute(routeId() + "_read-pets", exInputDir(),
-                "pet.csv", "ex-4-join-collections-pets", nextAvailableStartup());
+        var petRoute = getRoute(exampleRouteId("read-pets"), exInputDir(),
+                "pet.csv", "ex-4-join-collections-pets", nextAvailableStartup(), LlamaExamplesApplication.AUTO_START_ROUTES);
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId(routeId() + "_read-persons")
+                .routeId(exampleRouteId("read-persons"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(csvToMapsFormat)
                 .pollEnrich(petRoute, (me, je) -> Processors.join(me, je, Keys.of("id"), JoinType.INNER, Fields.ALL, Fields.of(Map.of("type", "animal")), true))
