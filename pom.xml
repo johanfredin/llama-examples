@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.github.johanfredin</groupId>
             <artifactId>llama</artifactId>
-            <version>a660247</version>
+            <version>0.1-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
@@ -88,23 +88,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-
-        <repository>
-            <id>llama-mvn-repo</id>
-            <url>https://raw.github.com/johanfredin/llama/mvn-repo/</url>
-
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-
-    </repositories>
 
 </project>
