@@ -14,4 +14,8 @@ public interface LlamaExamples {
         return getClass().getSimpleName() + " FINISHED.";
     }
 
+    default String routeId() {
+        return this.getClass().getSimpleName();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
@@ -21,11 +22,15 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
     public void configure() {
 
         from(Endpoint.file(exInputDir(), "pet.csv"))
+                .routeId(routeId() + "_read-pets")
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(Pet.class))
                 .to("direct:ex2-2-csv-to1-pet")
                 .startupOrder(nextAvailableStartup());
 
         from(Endpoint.file(exInputDir(), "person.csv"))
+                .routeId(routeId() + "_read-persons")
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(User.class))
                 .pollEnrich("direct:ex2-2-csv-to1-pet", (oldExchange, newExchange) -> {
                     List<User> users = LlamaUtils.asLlamaBeanList(oldExchange);

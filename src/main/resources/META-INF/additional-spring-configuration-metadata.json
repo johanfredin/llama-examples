@@ -94,6 +94,11 @@
       "name": "examples-root",
       "type": "java.lang.String",
       "description": "Description for examples-root."
+    },
+    {
+      "name": "examples-autostart-routes",
+      "type": "java.lang.String",
+      "description": "Description for examples-autostart-routes."
     }
   ]
 }

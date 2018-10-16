@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
@@ -20,7 +21,9 @@ public class Ex1_JSON extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        from(Endpoint.file(exInputDir(), "foo.json"))
+        from(Endpoint.file(exInputDir(), "person.json"))
+                .routeId(routeId())
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new ListJacksonDataFormat(CsvUser.class))
                 .process(this::processUsers)
                 .marshal().json(JsonLibrary.Jackson)

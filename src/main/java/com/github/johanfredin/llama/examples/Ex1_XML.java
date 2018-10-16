@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.utils.Endpoint;
 import org.apache.camel.Exchange;
@@ -17,7 +18,9 @@ public class Ex1_XML extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        from(Endpoint.file(exInputDir(), "foo.xml"))
+        from(Endpoint.file(exInputDir(), "person.xml"))
+                .routeId(routeId())
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .convertBodyTo(Users.class)
                 .process(this::processUsers)
                 .marshal().jaxb()

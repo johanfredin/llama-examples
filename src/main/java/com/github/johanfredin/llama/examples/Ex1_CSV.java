@@ -1,12 +1,13 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
+import com.github.johanfredin.llama.examples.bean.CsvUser;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
-import com.github.johanfredin.llama.examples.bean.CsvUser;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -22,13 +23,14 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
 
         BindyCsvDataFormat bindyCsvDataFormat = new BindyCsvDataFormat(CsvUser.class);
 
-        from(Endpoint.file(exInputDir(), "foo.csv"))                                    // Fetch input file
-                .routeId("read-foo-csv")
+        from(Endpoint.file(exInputDir(), "person.csv"))                                    // Fetch input file
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
+                .routeId("read-person-csv")
                 .unmarshal(bindyCsvDataFormat)                                                   // Unmarshal CSV to POJO
                 .process(this::processUsers)                                                     // Do transformation
                 .marshal(bindyCsvDataFormat)                                                     // Marshal POJO back to CSV
                 .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))              // Write output file
-                .onCompletion().log(getCompletionMessage()).end();
+                .onCompletion().log(getCompletionMessage());
     }
 
     private void processUsers(Exchange exchange) {
@@ -53,4 +55,5 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
     public String exOutputDir() {
         return prop("out-ex-1-csv");
     }
+
 }

@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
@@ -24,8 +25,9 @@ public class Ex1_CSVList extends LlamaRoute implements LlamaExamples {
         format.setDelimiter(';');
         format.setUseMaps(true);
 
-        from(Endpoint.file(exInputDir(), "foo.csv"))
-                .routeId("read-csv")
+        from(Endpoint.file(exInputDir(), "person.csv"))
+                .routeId(routeId())
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(format)
                 .process(this::transformData)
                 .marshal(format)

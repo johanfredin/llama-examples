@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.pojo.JoinType;
 import com.github.johanfredin.llama.processor.Processors;
@@ -13,11 +14,12 @@ import com.github.johanfredin.llama.examples.bean.Pet;
 public class Ex3_FilterValidateAgainst extends LlamaRoute implements LlamaExamples {
 
     public void configure() {
-        String petRoute = getRoute("read-pets", exInputDir(),
+        String petRoute = getRoute(routeId() + "_read-pets", exInputDir(),
                 "pet.csv", Pet.class, "ex-3-filter-validate-against-pets", nextAvailableStartup());
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId("read-persons")
+                .routeId(routeId() + "_read-persons")
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(CsvUser.class))
                 .pollEnrich(petRoute, (mainExchange, joiningExchange) -> Processors.<CsvUser, Pet>filterValidateAgainst(mainExchange, joiningExchange, JoinType.INNER))
                 .marshal(new BindyCsvDataFormat(CsvUser.class))

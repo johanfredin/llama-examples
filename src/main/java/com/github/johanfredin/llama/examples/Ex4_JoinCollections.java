@@ -1,5 +1,6 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.pojo.Fields;
 import com.github.johanfredin.llama.pojo.JoinType;
@@ -17,11 +18,12 @@ public class Ex4_JoinCollections extends LlamaRoute implements LlamaExamples {
     public void configure() {
         var csvToMapsFormat = csvToCollectionOfMaps();
 
-        var petRoute = getRoute("pet-route", exInputDir(),
+        var petRoute = getRoute(routeId() + "_read-pets", exInputDir(),
                 "pet.csv", "ex-4-join-collections-pets", nextAvailableStartup());
 
         from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId("person-route")
+                .routeId(routeId() + "_read-persons")
+                .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(csvToMapsFormat)
                 .pollEnrich(petRoute, (me, je) -> Processors.join(me, je, Keys.of("id"), JoinType.INNER, Fields.ALL, Fields.of(Map.of("type", "animal")), true))
                 .marshal(csvToMapsFormat)
