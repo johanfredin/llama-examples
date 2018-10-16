@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>se.fredin</groupId>
+    <groupId>com.github.johanfredin</groupId>
     <artifactId>llama-examples</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -45,12 +45,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>org.springframework</groupId>-->
-        <!--<artifactId>spring-core</artifactId>-->
-        <!--<version>RELEASE</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
@@ -64,13 +58,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.camel</groupId>
-            <artifactId>camel-test</artifactId>
-            <version>2.22.1</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
@@ -78,17 +65,17 @@
         <dependency>
             <groupId>com.github.johanfredin</groupId>
             <artifactId>llama</artifactId>
-            <version>6348af5d62</version>
+            <version>645a9da</version>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
-            <!--<plugin>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--</plugin>-->
+            <plugin>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
