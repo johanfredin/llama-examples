@@ -10,7 +10,7 @@ public class CsvUser implements LlamaBean {
     @DataField(pos = 1)
     private long id;
 
-    @DataField(pos = 2)
+    @DataField(pos = 2, columnName = "first-name")
     private String firstName;
 
     @DataField(pos = 3)

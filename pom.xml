@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.github.johanfredin</groupId>
             <artifactId>llama</artifactId>
-            <version>14dd367345</version>
+            <version>a660247</version>
         </dependency>
 
     </dependencies>

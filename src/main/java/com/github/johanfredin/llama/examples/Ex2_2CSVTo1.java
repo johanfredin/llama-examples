@@ -67,6 +67,6 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
 
     @Override
     public String exOutputDir() {
-        return prop("out-ex2-2csv-to1");
+        return prop("out-ex-2-2csv-to1");
     }
 }
