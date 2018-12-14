@@ -1,0 +1,28 @@
+[
+  {
+    "firstName": "Anders",
+    "lastName": "Svensson",
+    "age": 25,
+    "gender": "Male",
+    "country": "Sweden",
+    "pet": {
+      "type": "dog",
+      "age": "5"
+    }
+  },
+  {
+    "firstName": "Laila",
+    "lastName": "Bagge",
+    "age": 35,
+    "gender": "Female",
+    "country": "Denmark"
+  },
+  {
+    "firstName": "Klas",
+    "lastName": "Axelsson",
+    "age": 0,
+    "gender": "Male",
+    "country": "NO"
+  }
+]
+

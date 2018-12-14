@@ -40,8 +40,7 @@ public class Ex6_FilterCollection extends LlamaRoute implements LlamaExamples {
                         true))
                 .marshal(mapFormat)
                 .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
-                .onCompletion()
-                    .log(getCompletionMessage());
+                .onCompletion().log(getCompletionMessage());
     }
 
     @Override
