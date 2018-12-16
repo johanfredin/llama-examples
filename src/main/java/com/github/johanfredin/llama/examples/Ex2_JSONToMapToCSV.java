@@ -35,7 +35,7 @@ public class Ex2_JSONToMapToCSV extends LlamaRoute implements LlamaExamples {
         System.out.println("Entries\n--------");
         for(var entry : listOfMaps) {
             entry.entrySet().forEach(System.out::println);
-            System.out.println("");
+            System.out.println();
         }
     }
 

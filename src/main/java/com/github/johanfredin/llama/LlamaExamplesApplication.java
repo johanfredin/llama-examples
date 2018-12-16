@@ -22,6 +22,11 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 public class LlamaExamplesApplication {
 
+    /**
+     * Global property for deciding whether or not to start the routes. By default all
+     * examples should call this property so that we can easily switch of several routes at once
+     * and then manually run the ones we are interested in.
+     */
     public static final boolean AUTO_START_ROUTES = false;
 
     public static void main(String[] args) {

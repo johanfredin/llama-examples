@@ -10,7 +10,7 @@ public class Ex2_SQLToPOJOs extends LlamaRoute implements LlamaExamples{
 
     @Override
     public void configure() {
-        from("sql:select * from user?useIterator=false&outputType=SelectList&dataSource=llama")
+        from("sql:select * from user?useIterator=false&routeEmptyResultSet=true")
                 .autoStartup(true)
                 .process(this::verifyContent)
                 .marshal(csvToCollectionOfMaps())
@@ -20,7 +20,7 @@ public class Ex2_SQLToPOJOs extends LlamaRoute implements LlamaExamples{
 
     private void verifyContent(Exchange exchange) {
         Object body = exchange.getIn().getBody();
-        System.out.println(body);
+        System.out.println("body=" + body);
     }
 
     @Override
