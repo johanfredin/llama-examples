@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,11 +46,13 @@ public interface LlamaExamples {
     }
 
     /**
-     * A default completion message.
+     * A default completion message describing data read and data delivered
      * @return name of the class + " FINISHED"
      */
     default String getCompletionMessage() {
-        return getClass().getSimpleName() + " FINISHED.";
+        return getClass().getSimpleName() + " FINISHED";
+
+
     }
 
     /**

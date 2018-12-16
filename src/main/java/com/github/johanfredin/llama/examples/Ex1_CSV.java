@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
-import com.github.johanfredin.llama.examples.bean.CsvUser;
+import com.github.johanfredin.llama.examples.bean.User;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
@@ -36,12 +36,12 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
     @Override
     public void configure() {
 
-        BindyCsvDataFormat bindyCsvDataFormat = new BindyCsvDataFormat(CsvUser.class);
+        BindyCsvDataFormat bindyCsvDataFormat = new BindyCsvDataFormat(User.class);
 
         from(Endpoint.file(exInputDir(), "person.csv"))                                    // Fetch input file
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .routeId(exampleRouteId())
-                .unmarshal(bindyCsvDataFormat)                                                   // Unmarshal CSV to POJO
+                .unmarshal(bindyCsvDataFormat)                                                   // Un-marshal CSV to POJO
                 .process(this::processUsers)                                                     // Do transformation
                 .marshal(bindyCsvDataFormat)                                                     // Marshal POJO back to CSV
                 .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))              // Write output file
@@ -49,10 +49,10 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
     }
 
     private void processUsers(Exchange exchange) {
-        var users = LlamaUtils.<CsvUser>asLlamaBeanList(exchange)
+        var users = LlamaUtils.<User>asLlamaBeanList(exchange)
                 .stream()                                                                       // Iterate users
                 .filter(user -> LlamaUtils.withinRange(user.getAge(), 0, 100))        // Filter out invalid age
-                .sorted(Comparator.comparing(CsvUser::getCountry))                              // Sort on country
+                .sorted(Comparator.comparing(User::getCountry))                              // Sort on country
                 .peek(user -> user.setGender(user.getGender().toUpperCase()))                   // Set gender to be uppercase
                 .collect(Collectors.toList());                                                  // Collect the update
 

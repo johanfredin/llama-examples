@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,13 +19,15 @@ import com.github.johanfredin.llama.bean.LlamaBean;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 
+import java.util.List;
+
 @CsvRecord(separator = ";", generateHeaderColumns = true, skipFirstLine = true)
-public class CsvUser implements LlamaBean {
+public class UserWithPets implements LlamaBean {
 
     @DataField(pos = 1)
     private long id;
 
-    @DataField(pos = 2, columnName = "first-name")
+    @DataField(pos = 2)
     private String firstName;
 
     @DataField(pos = 3)
@@ -40,16 +42,7 @@ public class CsvUser implements LlamaBean {
     @DataField(pos = 6)
     private String country;
 
-    public CsvUser() {}
-
-    public CsvUser(long id, String firstName, String lastName, int age, String gender, String country) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.age = age;
-        this.gender = gender;
-        this.country = country;
-    }
+    private List<Pet> pets;
 
     public void setId(long id) {
         this.id = id;
@@ -100,16 +93,24 @@ public class CsvUser implements LlamaBean {
         this.country = country;
     }
 
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
+    }
+
+    public List<Pet> getPets() {
+        return pets;
+    }
 
     @Override
     public String toString() {
-        return "CsvUser{" +
+        return "UserWithPets{" +
                 "id=" + id +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", country='" + country + '\'' +
+                ", pets=" + pets +
                 '}';
     }
 

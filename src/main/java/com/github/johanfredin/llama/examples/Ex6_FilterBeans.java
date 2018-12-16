@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
-import com.github.johanfredin.llama.examples.bean.CsvUser;
+import com.github.johanfredin.llama.examples.bean.User;
 import com.github.johanfredin.llama.processor.Processors;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
@@ -29,13 +29,13 @@ public class Ex6_FilterBeans extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        var bindyCsvDataFormat = new BindyCsvDataFormat(CsvUser.class);
+        var bindyCsvDataFormat = new BindyCsvDataFormat(User.class);
 
         from(Endpoint.file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(bindyCsvDataFormat)
-                .process(exchange -> Processors.<CsvUser>filterBeans(exchange, user -> LlamaUtils.withinRange(user.getAge(), 20, 30)))
+                .process(exchange -> Processors.<User>filterBeans(exchange, user -> LlamaUtils.withinRange(user.getAge(), 20, 30)))
                 .marshal(bindyCsvDataFormat)
                 .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
                 .onCompletion().log(getCompletionMessage());

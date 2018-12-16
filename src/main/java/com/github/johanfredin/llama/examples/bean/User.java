@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,15 +19,18 @@ import com.github.johanfredin.llama.bean.LlamaBean;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
+@Entity
 @CsvRecord(separator = ";", generateHeaderColumns = true, skipFirstLine = true)
 public class User implements LlamaBean {
 
+    @Id
     @DataField(pos = 1)
     private long id;
 
-    @DataField(pos = 2)
+    @DataField(pos = 2, columnName = "first-name")
     private String firstName;
 
     @DataField(pos = 3)
@@ -42,7 +45,7 @@ public class User implements LlamaBean {
     @DataField(pos = 6)
     private String country;
 
-    private List<Pet> pets;
+    public User() {}
 
     public void setId(long id) {
         this.id = id;
@@ -93,13 +96,6 @@ public class User implements LlamaBean {
         this.country = country;
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = pets;
-    }
-
-    public List<Pet> getPets() {
-        return pets;
-    }
 
     @Override
     public String toString() {
@@ -110,7 +106,6 @@ public class User implements LlamaBean {
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", country='" + country + '\'' +
-                ", pets=" + pets +
                 '}';
     }
 

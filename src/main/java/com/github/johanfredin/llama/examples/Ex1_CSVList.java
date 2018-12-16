@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
+import com.github.johanfredin.llama.collection.LlamaMap;
 import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
@@ -51,17 +52,15 @@ public class Ex1_CSVList extends LlamaRoute implements LlamaExamples {
     }
 
     private void transformData(Exchange exchange) {
-        var collect = LlamaUtils.asListOfMaps(exchange)
+        var collect = LlamaUtils.asLinkedListOfMaps(exchange)
                 .stream()
                 .filter(e -> LlamaUtils.withinRange(e.get("age"), 0, 100))
                 .peek(e -> e.put("gender", e.get("gender").toUpperCase()))
                 .sorted(Comparator.comparing(e -> e.get("country")))
                 .collect(Collectors.toList());
 
-        var header = new HashMap<String, String>();
-        for (String s : collect.get(0).keySet()) {
-            header.put(s, s);
-        }
+        var header = new LlamaMap<String, String>();
+        collect.get(0).keySet().forEach(e -> header.put(e, e));
         collect.add(0, header);
         exchange.getIn().setBody(collect);
     }

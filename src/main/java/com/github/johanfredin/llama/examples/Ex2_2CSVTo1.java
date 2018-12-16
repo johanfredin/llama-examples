@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright 2018 Johan Fredin
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,7 @@ import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
 import com.github.johanfredin.llama.examples.bean.Pet;
-import com.github.johanfredin.llama.examples.bean.User;
+import com.github.johanfredin.llama.examples.bean.UserWithPets;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,9 +46,9 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
         from(Endpoint.file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId("read-persons"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
-                .unmarshal(new BindyCsvDataFormat(User.class))
+                .unmarshal(new BindyCsvDataFormat(UserWithPets.class))
                 .pollEnrich("direct:ex2-2-csv-to1-pet", (oldExchange, newExchange) -> {
-                    List<User> users = LlamaUtils.asLlamaBeanList(oldExchange);
+                    List<UserWithPets> userWithPets = LlamaUtils.asLlamaBeanList(oldExchange);
                     List<Pet> pets = LlamaUtils.asLlamaBeanList(newExchange);
 
                     // Create map <k, list<v>> of pets
@@ -57,17 +57,17 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
                             .collect(Collectors.groupingBy(Pet::getId));
 
                     // Match the 2
-                    users.forEach(u -> {
+                    userWithPets.forEach(u -> {
                         var petList = petMap.get(u.getId());
                         if (petList != null) {
                             u.setPets(petList);
                         }
                     });
 
-                    oldExchange.getIn().setBody(users);
+                    oldExchange.getIn().setBody(userWithPets);
                     return oldExchange;
                 })
-                .marshal(new BindyCsvDataFormat(User.class))
+                .marshal(new BindyCsvDataFormat(UserWithPets.class))
                 .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion().log(getCompletionMessage());
