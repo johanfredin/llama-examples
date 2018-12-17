@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<userWithPets>
+<users>
     <user>
         <first-name>Anders</first-name>
         <last-name>Svensson</last-name>
@@ -21,4 +21,4 @@
         <gender>Male</gender>
         <country>NO</country>
     </user>
-</userWithPets>
+</users>

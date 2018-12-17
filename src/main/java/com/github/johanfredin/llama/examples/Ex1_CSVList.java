@@ -18,14 +18,12 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.collection.LlamaMap;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.csv.CsvDataFormat;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -41,13 +39,13 @@ public class Ex1_CSVList extends LlamaRoute implements LlamaExamples {
         format.setDelimiter(';');
         format.setUseMaps(true);
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(format)
                 .process(this::transformData)
                 .marshal(format)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

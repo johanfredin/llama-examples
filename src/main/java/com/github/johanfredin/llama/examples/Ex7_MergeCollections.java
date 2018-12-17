@@ -18,7 +18,7 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
+import org.apache.camel.model.RouteDefinition;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,15 +29,17 @@ public class Ex7_MergeCollections extends LlamaRoute implements LlamaExamples {
         var personRoute = super.getRoute("persons", exInputDir(), "person.csv", "person", nextAvailableStartup());
 
         // Merge with person-pets route
-        from(Endpoint.file(exInputDir(), "pet-person.csv"))
+        from(file(exInputDir(), "pet-person.csv"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(super.csvToCollectionOfMaps())
-                .pollEnrich(personRoute, (e1, e2) -> Processors.merge(e1, e2,true))
+                .pollEnrich(personRoute.getEndpointUri(), (e1, e2) -> Processors.merge(e1, e2,true))
                 .marshal(csvToCollectionOfMaps())
-                .to(Endpoint.file(exOutputDir(), "persons-merged.csv"))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion()
                 .log(getCompletionMessage());
+
+        endRoutes(personRoute);
     }
 
     @Override

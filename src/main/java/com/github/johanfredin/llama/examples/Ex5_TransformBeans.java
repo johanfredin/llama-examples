@@ -19,7 +19,6 @@ import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.examples.bean.User;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +29,7 @@ public class Ex5_TransformBeans extends LlamaRoute implements LlamaExamples {
     public void configure() {
         var bindyCsvDataFormat = new BindyCsvDataFormat(User.class);
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(bindyCsvDataFormat)
@@ -39,7 +38,7 @@ public class Ex5_TransformBeans extends LlamaRoute implements LlamaExamples {
                     user.setFirstName("Transformed-" + user.getFirstName());
                 }))
                 .marshal(bindyCsvDataFormat)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

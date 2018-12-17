@@ -17,12 +17,12 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
-import com.github.johanfredin.llama.utils.Endpoint;
-import com.github.johanfredin.llama.utils.LlamaUtils;
-import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
-import org.springframework.stereotype.Component;
 import com.github.johanfredin.llama.examples.bean.Pet;
 import com.github.johanfredin.llama.examples.bean.UserWithPets;
+import com.github.johanfredin.llama.utils.LlamaUtils;
+import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+import org.apache.camel.model.RouteDefinition;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,14 +36,14 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
     @Override
     public void configure() {
 
-        from(Endpoint.file(exInputDir(), "pet.csv"))
+        RouteDefinition petRoute = from(file(exInputDir(), "pet.csv"))
                 .routeId(exampleRouteId("read-pets"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(Pet.class))
                 .to("direct:ex2-2-csv-to1-pet")
                 .startupOrder(nextAvailableStartup());
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId("read-persons"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(UserWithPets.class))
@@ -68,10 +68,12 @@ public class Ex2_2CSVTo1 extends LlamaRoute implements LlamaExamples {
                     return oldExchange;
                 })
                 .marshal(new BindyCsvDataFormat(UserWithPets.class))
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId("read-persons")))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion().log(getCompletionMessage());
 
+        // Close pet route
+        petRoute.to(controlBus(petRoute.getId()));
 
     }
 

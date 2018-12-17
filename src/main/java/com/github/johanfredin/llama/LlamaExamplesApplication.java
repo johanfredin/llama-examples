@@ -27,7 +27,12 @@ public class LlamaExamplesApplication {
      * examples should call this property so that we can easily switch of several routes at once
      * and then manually run the ones we are interested in.
      */
-    public static final boolean AUTO_START_ROUTES = false;
+    public static final boolean AUTO_START_ROUTES = true;
+
+    /**
+     * SQL examples requires some sort of database connection and are therefore not started by default.
+     */
+    public static final boolean AUTO_START_SQL_ROUTES = true;
 
     public static void main(String[] args) {
         SpringApplication.run(LlamaExamplesApplication.class, args);

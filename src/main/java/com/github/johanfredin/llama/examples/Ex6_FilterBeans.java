@@ -19,7 +19,6 @@ import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.examples.bean.User;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
 import org.springframework.stereotype.Component;
@@ -31,13 +30,13 @@ public class Ex6_FilterBeans extends LlamaRoute implements LlamaExamples {
     public void configure() {
         var bindyCsvDataFormat = new BindyCsvDataFormat(User.class);
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(bindyCsvDataFormat)
                 .process(exchange -> Processors.<User>filterBeans(exchange, user -> LlamaUtils.withinRange(user.getAge(), 20, 30)))
                 .marshal(bindyCsvDataFormat)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

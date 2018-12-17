@@ -1,8 +1,8 @@
 package com.github.johanfredin.llama.examples;
 
+import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.examples.bean.User;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
@@ -13,12 +13,16 @@ public class Ex2_SQLToJPAToCSV extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        from("sql:select * from user?useIterator=false&routeEmptyResultSet=true&outputClass=com.github.johanfredin.llama.examples.bean.User")
-                .routeId(exampleRouteId())
-                .autoStartup(true)
+        var routeId = exampleRouteId();
+        var pojoClass = User.class;
+
+
+        from(sql("select * from user", pojoClass))
+                .routeId(routeId)
+                .autoStartup(LlamaExamplesApplication.AUTO_START_SQL_ROUTES)
                 .process(this::verifyContent)
-                .marshal(new BindyCsvDataFormat(User.class))
-                .to(Endpoint.file(exOutputDir(), "sql-users.csv"), "controlbus:route?routeId=" + exampleRouteId() + "&action=stop&async=true")
+                .marshal(new BindyCsvDataFormat(pojoClass))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(routeId))
                 .onCompletion().log(getCompletionMessage());
     }
 

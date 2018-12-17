@@ -18,7 +18,6 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,10 +25,9 @@ public class Ex5_TransformCollection extends LlamaRoute implements LlamaExamples
 
     @Override
     public void configure() {
-
         var csvMapFormat = super.csvToCollectionOfMaps();
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(csvMapFormat)
@@ -38,7 +36,7 @@ public class Ex5_TransformCollection extends LlamaRoute implements LlamaExamples
                     map.put("first-name", "Transformed Name");
                 }))
                 .marshal(csvMapFormat)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

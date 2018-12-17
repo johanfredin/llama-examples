@@ -17,10 +17,9 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
-import com.github.johanfredin.llama.utils.Endpoint;
+import com.github.johanfredin.llama.examples.jaxb.Users;
 import org.apache.camel.Exchange;
 import org.springframework.stereotype.Component;
-import com.github.johanfredin.llama.examples.jaxb.Users;
 
 import java.util.Comparator;
 import java.util.stream.Collectors;
@@ -33,13 +32,13 @@ public class Ex1_XML extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        from(Endpoint.file(exInputDir(), "person.xml"))
+        from(file(exInputDir(), "person.xml"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .convertBodyTo(Users.class)
                 .process(this::processUsers)
                 .marshal().jaxb()
-                .to(Endpoint.file(exOutputDir(), resultingFileName("xml")))
+                .to(file(exOutputDir(), resultingFileName("xml")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

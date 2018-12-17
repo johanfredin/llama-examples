@@ -18,7 +18,6 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.examples.bean.User;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
@@ -38,13 +37,13 @@ public class Ex1_CSV extends LlamaRoute implements LlamaExamples {
 
         BindyCsvDataFormat bindyCsvDataFormat = new BindyCsvDataFormat(User.class);
 
-        from(Endpoint.file(exInputDir(), "person.csv"))                                    // Fetch input file
+        from(file(exInputDir(), "person.csv"))                                    // Fetch input file
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .routeId(exampleRouteId())
                 .unmarshal(bindyCsvDataFormat)                                                   // Un-marshal CSV to POJO
                 .process(this::processUsers)                                                     // Do transformation
-                .marshal(bindyCsvDataFormat)                                                     // Marshal POJO back to CSV
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))              // Write output file
+                .marshal(bindyCsvDataFormat)                                                                          // Marshal POJO back to CSV
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))              // Write output file
                 .onCompletion().log(getCompletionMessage());
     }
 

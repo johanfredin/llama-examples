@@ -21,7 +21,7 @@ import com.github.johanfredin.llama.pojo.Fields;
 import com.github.johanfredin.llama.pojo.JoinType;
 import com.github.johanfredin.llama.pojo.Keys;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
+import org.apache.camel.model.RouteDefinition;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -31,20 +31,23 @@ public class Ex4_JoinCollections extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
+        var routeId = exampleRouteId("read-persons");
         var csvToMapsFormat = csvToCollectionOfMaps();
 
         var petRoute = getRoute(exampleRouteId("read-pets"), exInputDir(),
                 "pet.csv", "ex-4-join-collections-pets", nextAvailableStartup(), LlamaExamplesApplication.AUTO_START_ROUTES);
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
-                .routeId(exampleRouteId("read-persons"))
+        from(file(exInputDir(), "person.csv"))
+                .routeId(routeId)
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(csvToMapsFormat)
-                .pollEnrich(petRoute, (me, je) -> Processors.join(me, je, Keys.of("id"), JoinType.INNER, Fields.ALL, Fields.of(Map.of("type", "animal")), true))
+                .pollEnrich(petRoute.getEndpointUri(), (me, je) -> Processors.join(me, je, Keys.of("id"), JoinType.INNER, Fields.ALL, Fields.of(Map.of("type", "animal")), true))
                 .marshal(csvToMapsFormat)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(routeId))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion().log(getCompletionMessage());
+
+        endRoutes(petRoute);
     }
 
     @Override

@@ -2,9 +2,6 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
-import com.github.johanfredin.llama.utils.Endpoint;
-import com.github.johanfredin.llama.utils.LlamaUtils;
-import org.apache.camel.Exchange;
 import org.apache.camel.component.jackson.ListJacksonDataFormat;
 import org.springframework.stereotype.Component;
 
@@ -20,24 +17,17 @@ public class Ex2_JSONToMapToCSV extends LlamaRoute implements LlamaExamples {
 
         var format = new ListJacksonDataFormat();
 
-        from(Endpoint.file(exInputDir(), "person.json"))
+        from(file(exInputDir(), "person.json"))
+                .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(format)
-                .process(this::verifyIsMap)
+                .process(exchange -> log.info("Exchange=" + exchange))
                 .marshal(format)
-                .to(Endpoint.file(exOutputDir(), "person.csv"))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion().log(getCompletionMessage());
     }
 
-    private void verifyIsMap(Exchange e) {
-        var listOfMaps = LlamaUtils.asListOfMaps(e);
-        System.out.println("Entries\n--------");
-        for(var entry : listOfMaps) {
-            entry.entrySet().forEach(System.out::println);
-            System.out.println();
-        }
-    }
 
     @Override
     public String exInputDir() {

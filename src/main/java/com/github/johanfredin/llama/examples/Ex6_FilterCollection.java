@@ -18,7 +18,6 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.processor.Processors;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.springframework.stereotype.Component;
 
@@ -30,16 +29,14 @@ public class Ex6_FilterCollection extends LlamaRoute implements LlamaExamples {
 
         var mapFormat = super.csvToCollectionOfMaps();
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(mapFormat)
                 .process(exchange -> Processors.filterCollection(
-                        exchange,
-                        map -> LlamaUtils.withinRange(map.get("age"), 10, 30),
-                        true))
+                        exchange, map -> LlamaUtils.withinRange(map.get("age"), 10, 30), true))
                 .marshal(mapFormat)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("csv")))
+                .to(file(exOutputDir(), resultingFileName("csv")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

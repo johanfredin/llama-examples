@@ -18,7 +18,6 @@ package com.github.johanfredin.llama.examples;
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
 import com.github.johanfredin.llama.examples.bean.User;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.component.jackson.ListJacksonDataFormat;
@@ -36,13 +35,13 @@ public class Ex1_JSON extends LlamaRoute implements LlamaExamples {
 
     @Override
     public void configure() {
-        from(Endpoint.file(exInputDir(), "person.json"))
+        from(file(exInputDir(), "person.json"))
                 .routeId(exampleRouteId())
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new ListJacksonDataFormat(User.class))
                 .process(this::processUsers)
                 .marshal().json(JsonLibrary.Jackson)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("json")))
+                .to(file(exOutputDir(), resultingFileName("json")), controlBus(exampleRouteId()))
                 .onCompletion().log(getCompletionMessage());
     }
 

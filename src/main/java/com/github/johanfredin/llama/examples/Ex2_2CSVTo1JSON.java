@@ -17,14 +17,14 @@ package com.github.johanfredin.llama.examples;
 
 import com.github.johanfredin.llama.LlamaExamplesApplication;
 import com.github.johanfredin.llama.LlamaRoute;
+import com.github.johanfredin.llama.examples.bean.Pet;
 import com.github.johanfredin.llama.examples.bean.UserWithPets;
-import com.github.johanfredin.llama.utils.Endpoint;
 import com.github.johanfredin.llama.utils.LlamaUtils;
 import org.apache.camel.Exchange;
 import org.apache.camel.dataformat.bindy.csv.BindyCsvDataFormat;
+import org.apache.camel.model.RouteDefinition;
 import org.apache.camel.model.dataformat.JsonLibrary;
 import org.springframework.stereotype.Component;
-import com.github.johanfredin.llama.examples.bean.Pet;
 
 import java.util.stream.Collectors;
 
@@ -38,22 +38,24 @@ public class Ex2_2CSVTo1JSON extends LlamaRoute implements LlamaExamples {
     @Override
     public void configure() {
 
-        from(Endpoint.file(exInputDir(), "pet.csv"))
+        RouteDefinition petRoute = from(file(exInputDir(), "pet.csv"))
                 .routeId(exampleRouteId("read-pets"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(Pet.class))
                 .to("direct:ex-2-2-csv-to1JSON-pet")
                 .startupOrder(nextAvailableStartup());
 
-        from(Endpoint.file(exInputDir(), "person.csv"))
+        from(file(exInputDir(), "person.csv"))
                 .routeId(exampleRouteId("read-users"))
                 .autoStartup(LlamaExamplesApplication.AUTO_START_ROUTES)
                 .unmarshal(new BindyCsvDataFormat(UserWithPets.class))
                 .pollEnrich("direct:ex-2-2-csv-to1JSON-pet", this::aggregate)
                 .marshal().json(JsonLibrary.Jackson)
-                .to(Endpoint.file(exOutputDir(), resultingFileName("json")))
+                .to(file(exOutputDir(), resultingFileName("json")), controlBus(exampleRouteId("read-users")))
                 .startupOrder(nextAvailableStartup())
                 .onCompletion().log(getCompletionMessage());
+
+        petRoute.to(controlBus(petRoute.getId()));
     }
 
 
